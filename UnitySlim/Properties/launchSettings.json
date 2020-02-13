@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Slim": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\adam.berent\\Documents\\Source\\Slim\\TestData\\EditorLarge.log 20"
+    }
+  }
+}
