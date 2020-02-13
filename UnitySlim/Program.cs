@@ -26,7 +26,20 @@ namespace Slim
 
             if (args.Length > 0)
             {
-                fileName = args[0];
+                //Display Help
+                if (args[0] == "-h" || args[0] == "-help")
+                {
+                    Console.WriteLine("Usage: UnitySlim [filepath] [limiter]");
+                    Console.WriteLine();
+                    Console.WriteLine("filepath : Path to the Editor.log file created by Unity at build time.");
+                    Console.WriteLine("limiter  : Number of assets to display sorted by size desc");
+                    Console.WriteLine();
+                    return;
+                }
+                else
+                {
+                    fileName = args[0];
+                }
             }
             if (args.Length > 1)
             {
