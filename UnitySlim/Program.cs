@@ -11,14 +11,16 @@ namespace Slim
     {
         static void Main(string[] args)
         {
+            //Default Path for Win Editor Files
             var ending = @"\Unity\Editor\Editor.log";
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
+                //Default Path for Mac Editor Files
                 ending = @"/Library/Logs/Unity/Editor.log";
             }
             
-
+            //Get Current App Data Folder (which has a user name in it)
             var fileName = Utils.AppDataFolder() + ending;
             var limiter = 10;
 
@@ -32,15 +34,21 @@ namespace Slim
             }
             if (args.Length == 0)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("No Arguments Found using default values");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
             }
 
             if (!File.Exists(fileName))
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error: Invalid Path: " + fileName);
-              
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                return;
             }
-
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Found Editor Log: " + fileName);
             Console.WriteLine();
 
@@ -64,13 +72,13 @@ namespace Slim
                 {
                     summaryData.Find(x => x.ItemType.Contains(tempItem.ItemType)).ItemSize += tempItem.ItemSize;
                 }
-
             }
 
             //Display Summary
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Summary:");
             Console.WriteLine();
-
+            Console.ForegroundColor = ConsoleColor.White;
             foreach (SummaryItem item in summaryData)
             {
                 if (item.ItemSize >= 1000)
@@ -85,10 +93,11 @@ namespace Slim
             }
 
             //Display Results
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine();
             Console.WriteLine("Top " + limiter + " Assets By Size:");
             Console.WriteLine();
-
+            Console.ForegroundColor = ConsoleColor.White;
             int count = 0;
 
             foreach (LogItem item in parser.Result)
@@ -110,7 +119,8 @@ namespace Slim
             }
 
             Console.WriteLine();
-            Console.WriteLine("Press Any Key:");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("To exit press any key ...");
             Console.ReadLine();
         }
     }

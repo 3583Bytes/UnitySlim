@@ -23,48 +23,50 @@ namespace Slim.Util
                 return "";
             }
 
-            var name = Path.GetFileName(absolutepath);
-            int namelen = name.Length;
-            int pathlen = absolutepath.Length;
-            var dir = absolutepath.Substring(0, pathlen - namelen);
+            var fileName = Path.GetFileName(absolutepath);
+            int fileNameLen = fileName.Length;
+            int pathLen = absolutepath.Length;
+            var dir = absolutepath.Substring(0, pathLen - fileNameLen);
 
-            int delimlen = delimiter.Length;
-            int idealminlen = namelen + delimlen;
+            int delimLen = delimiter.Length;
+            int idealMinLen = fileNameLen + delimLen;
 
             var slash = (absolutepath.IndexOf("/") > -1 ? "/" : "\\");
 
             //less than the minimum amt
-            if (limit < ((2 * delimlen) + 1))
+            if (limit < ((2 * delimLen) + 1))
             {
                 return "";
             }
 
             //fullpath
-            if (limit >= pathlen)
+            if (limit >= pathLen)
             {
                 return absolutepath;
             }
 
             //file name condensing
-            if (limit < idealminlen)
+            if (limit < idealMinLen)
             {
-                return delimiter + name.Substring(0, (limit - (2 * delimlen))) + delimiter;
+                return delimiter + fileName.Substring(0, (limit - (2 * delimLen))) + delimiter;
             }
 
             //whole name only, no folder structure shown
-            if (limit == idealminlen)
+            if (limit == idealMinLen)
             {
-                return delimiter + name;
+                return delimiter + fileName;
             }
 
-            return dir.Substring(0, (limit - (idealminlen + 1))) + delimiter + slash + name;
+            return dir.Substring(0, (limit - (idealMinLen + 1))) + delimiter + slash + fileName;
         }
 
         public static string AppDataFolder()
         {
-            var userPath = Environment.GetEnvironmentVariable(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "LOCALAPPDATA" : "Home");
+            var userPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-            return userPath;
+            //var userPath = Environment.GetEnvironmentVariable(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "LOCALAPPDATA" : "Home");
+            
+            return userPath.Replace(@".local/share", "");
         }
 
         public static string GetRootFolder(string path)
