@@ -2,6 +2,9 @@
 
 Unity Game Engine Build Size Analyzer.  Unity Slim examines Editor.log created as a result of a Build and Displays Assets sorted by size to help you reduce the size of your Unity Game.
 
+![UnitySlim Screenshot](https://github.com/3583Bytes/UnitySlim/blob/master/Screenshots/UnitySlimScreenshot.PNG)
+
+
 Usage: UnitySlim [filepath] [limiter]
 
 *filepath* : Path to the Editor.log file created by Unity at build time.  
