@@ -17,7 +17,7 @@ namespace Slim
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 //Default Path for Mac Editor Files
-                ending = @"/Library/Logs/Unity/Editor.log";
+                ending = @"Library/Logs/Unity/Editor.log";
             }
             
             //Get Current App Data Folder (which has a user name in it)
@@ -64,6 +64,12 @@ namespace Slim
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Found Editor Log: " + fileName);
             Console.WriteLine();
+
+            if (File.Exists(""))
+            {
+                //Editor-prev.log
+            }
+
 
             LogParser parser = new LogParser(fileName);
 
@@ -134,6 +140,7 @@ namespace Slim
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("To exit press any key ...");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.ReadLine();
         }
     }
