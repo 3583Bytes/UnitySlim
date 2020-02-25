@@ -15,7 +15,7 @@ namespace Slim.Util
         /// <param name="limit">The maximum length</param>
         /// <param name="delimiter">The character(s) to use to imply incompleteness</param>
         /// <returns></returns>
-        public static string ShrinkPath(string absolutepath, int limit, string delimiter = "…")
+        internal static string ShrinkPath(string absolutepath, int limit, string delimiter = "…")
         {
             //no path provided
             if (string.IsNullOrEmpty(absolutepath))
@@ -60,16 +60,29 @@ namespace Slim.Util
             return dir.Substring(0, (limit - (idealMinLen + 1))) + delimiter + slash + fileName;
         }
 
-        public static string AppDataFolder()
+        internal static string AppDataFolder()
         {
             var userPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-            //var userPath = Environment.GetEnvironmentVariable(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "LOCALAPPDATA" : "Home");
-            
             return userPath.Replace(@".local/share", "");
         }
+        internal static string GetDefaultFilePath()
+        {
+            //Default Path for Win Editor Files
+            var ending = @"\Unity\Editor\Editor.log";
 
-        public static string GetRootFolder(string path)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                //Default Path for Mac Editor Files
+                ending = @"Library/Logs/Unity/Editor.log";
+            }
+
+            //Get Current App Data Folder (which has a user name in it)
+            var fileName = Utils.AppDataFolder() + ending;
+            return fileName;
+        }
+
+        internal static string GetRootFolder(string path)
         {
             while (true)
             {

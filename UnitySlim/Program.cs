@@ -11,18 +11,8 @@ namespace Slim
     {
         static void Main(string[] args)
         {
-            //Default Path for Win Editor Files
-            var ending = @"\Unity\Editor\Editor.log";
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                //Default Path for Mac Editor Files
-                ending = @"Library/Logs/Unity/Editor.log";
-            }
-            
-            //Get Current App Data Folder (which has a user name in it)
-            var fileName = Utils.AppDataFolder() + ending;
-            var limiter = 10;
+            string fileName = Utils.GetDefaultFilePath();
+            int limiter = 20;
 
             if (args.Length > 0)
             {
@@ -30,6 +20,8 @@ namespace Slim
                 if (args[0] == "-h" || args[0] == "-help")
                 {
                     Console.WriteLine("Usage: UnitySlim [filepath] [limiter]");
+                    Console.WriteLine();
+                    Console.WriteLine("Unity Game Engine Build Size Analyzer.");
                     Console.WriteLine();
                     Console.WriteLine("filepath : Path to the Editor.log file created by Unity at build time.");
                     Console.WriteLine("limiter  : Number of assets to display sorted by size desc");
@@ -64,12 +56,6 @@ namespace Slim
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Found Editor Log: " + fileName);
             Console.WriteLine();
-
-            if (File.Exists(""))
-            {
-                //Editor-prev.log
-            }
-
 
             LogParser parser = new LogParser(fileName);
 
@@ -131,7 +117,7 @@ namespace Slim
                     Console.WriteLine(Math.Round(item.ItemSize, 2) + " kb " + item.ItemPercent + "% " + Utils.ShrinkPath(item.ItemPath, 90));
                 }
 
-                if (count>= limiter)
+                if (count >= limiter)
                 {
                     break;
                 }
@@ -143,5 +129,6 @@ namespace Slim
             Console.ForegroundColor = ConsoleColor.White;
             Console.ReadLine();
         }
+
     }
 }
