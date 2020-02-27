@@ -9,34 +9,14 @@ namespace Slim
 {
     class Program
     {
+       
+
         static void Main(string[] args)
         {
+            //Set Default Values, used if no args are passed
             string fileName = Utils.GetDefaultFilePath();
             int limiter = 20;
 
-            if (args.Length > 0)
-            {
-                //Display Help
-                if (args[0] == "-h" || args[0] == "-help")
-                {
-                    Console.WriteLine("Usage: UnitySlim [filepath] [limiter]");
-                    Console.WriteLine();
-                    Console.WriteLine("Unity Game Engine Build Size Analyzer.");
-                    Console.WriteLine();
-                    Console.WriteLine("filepath : Path to the Editor.log file created by Unity at build time.");
-                    Console.WriteLine("limiter  : Number of assets to display sorted by size desc");
-                    Console.WriteLine();
-                    return;
-                }
-                else
-                {
-                    fileName = args[0];
-                }
-            }
-            if (args.Length > 1)
-            {
-                limiter = int.Parse(args[1]);
-            }
             if (args.Length == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -45,6 +25,53 @@ namespace Slim
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
+            foreach (string arg in args)
+            {
+                //TryParse overwrites to 0 on failure.
+                int tmp;
+                //Check if parameter is the limiter (int)
+                bool success = Int32.TryParse(args[0], out tmp);
+
+                if (success)
+                {
+                    limiter = tmp;
+                }
+                //Not limiter maybe its -h for help
+                else
+                {
+                    //Display Help
+                    if (arg == "-h" || arg == "-help")
+                    {
+                        Console.WriteLine("Usage: UnitySlim [filepath] [limiter]");
+                        Console.WriteLine();
+                        Console.WriteLine("Unity Game Engine Build Size Analyzer.");
+                        Console.WriteLine();
+                        Console.WriteLine("filepath : Path to the Editor.log file created by Unity at build time.");
+                        Console.WriteLine("limiter  : Number of assets to display sorted by size desc");
+                        Console.WriteLine();
+                        return;
+                    }
+                    else
+                    {
+                        //Maybe it is a file
+                        if (File.Exists(arg))
+                        {
+                            fileName = arg;
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Warning:" +arg + "is not a valid argument");
+                            Console.WriteLine();
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                }
+                
+
+            }
+
+            // We still want to check if file exists in case we are using a default path
             if (!File.Exists(fileName))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -122,12 +149,7 @@ namespace Slim
                     break;
                 }
             }
-
-            Console.WriteLine();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("To exit press any key ...");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.ReadLine();
+            
         }
 
     }
